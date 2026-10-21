@@ -40,7 +40,12 @@ export default function LoginPage() {
       localStorage.setItem('accessToken', data.accessToken);
       localStorage.setItem('user', JSON.stringify(data.user));
 
-      window.location.href = '/';
+      if (data.user.role === 'ADMIN') {
+        window.location.href = '/admin/products';
+      } else {
+        window.location.href = '/';
+      } 
+
     } catch (err) {
       setError(
         err instanceof Error ? err.message : 'Something went wrong.',
