@@ -30,7 +30,10 @@ export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll() {
-    return this.prisma.product.findMany({
+    const count = await this.prisma.product.count();
+    console.log(`[diagnostic] Product count: ${count}`);
+
+    const products = await this.prisma.product.findMany({
       include: {
         variants: {
           orderBy: { size: 'asc' },
@@ -38,6 +41,9 @@ export class ProductsService {
       },
       orderBy: { id: 'asc' },
     });
+
+    console.log(`[diagnostic] Products returned: ${products.length}`);
+    return products;
   }
 
   async findOne(id: number) {
